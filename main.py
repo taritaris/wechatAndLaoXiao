@@ -3,6 +3,7 @@ from time import time, localtime
 import cityinfo
 from requests import get, post
 from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 import os
 
@@ -65,6 +66,20 @@ def get_weather(province, city):
     return weather, temp, tempn, wd
 
 
+def getData():
+    target_date = datetime(2023, 8, 25)
+    current_date = datetime.now()
+
+    delta = target_date - current_date
+    dateZ = delta.days
+    if dateZ <= 0:
+        dateZ = "开学啦，开学了"
+    else:
+        dateZ = "距离开学还剩"+str(dateZ)+"天"
+    return dateZ
+
+
+
 def get_ciba():
     url = "http://open.iciba.com/dsapi/"
     headers = {
@@ -98,7 +113,7 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
                 "color": get_color()
             },
             "name": {
-                "value": "最可爱的朋友们",
+                "value": "老乡,老乡",
                 "color": get_color()
             },
             "city": {
@@ -131,6 +146,10 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
             },
             "wd": {
                 "value": wd,
+                "color": get_color()
+            },
+            "dataZ": {
+                "value": getData(),
                 "color": get_color()
             }
 
